@@ -7,8 +7,12 @@ module.exports = {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: "d2of6ib79e96id",
-    schema: "growdevers",
-    entities: [],
+    entities: [
+        'src/database/entities/**/*.ts'
+    ],
+    cli: {
+        entitiesDir: 'src/database/entities'
+    },
     synchronize: false,
     extra: {
         ssl: {
