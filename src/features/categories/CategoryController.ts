@@ -1,4 +1,4 @@
-import { Connection, getConnection, Repository } from "typeorm";
+import { Connection, EntityNotFoundError, getConnection, Repository } from "typeorm";
 import { Category } from "../../database/entities/Category";
 
 export class CategoryController {
@@ -12,21 +12,17 @@ export class CategoryController {
 
     async create(name: string, description: string, tag: number) {
         try {
-            // await this.connection.query(
-            //     `INSERT INTO produtos.categoria 
-            //     (nome, descricao, tag)
-            //     VALUES
-            //     ($1, $2, $3)
-            //     `, [name, description, tag]
-            // );
+            // let category = this.repository.create({
+            //     descricao: name,
+            //     nome: description,
+            //     tag: tag
+            // });
 
-            let category = this.repository.create({
-                descricao: name,
-                nome: description,
-                tag: tag
-            });
-
-            this.repository.save(category);
+            let category = new Category(description, name, tag);
+            console.log(category);
+            
+            await this.repository.save(category);
+            console.log(category);
     
             return {
                 ok: true
@@ -51,6 +47,33 @@ export class CategoryController {
         return {
             ok: true,
             data: result2
+        }
+    }
+
+    async update(uid: string, description: string) {
+        try {
+            let category = await this.repository.findOne(uid);
+
+            if(!category) {
+                return {
+                    ok: false,
+                    error: "category not found"
+                }
+            }
+
+            category.descricao = description;
+
+            await this.repository.save(category);
+
+            return {
+                ok: true
+            }
+
+        } catch(error) {
+            return {
+                ok: false,
+                error
+            }
         }
     }
 }
