@@ -1,6 +1,6 @@
 import express from "express";
 
-import { initConnection } from "./database/connection";
+import { initConnection } from "./core/database/connection";
 import { addressRoutes } from "./features/address/AddressRoutes";
 import { categoryRoutes } from "./features/categories/CategoryRoutes";
 import { productRoutes } from "./features/products/ProductRoutes";

@@ -1,7 +1,7 @@
 import { Connection, getConnection, Repository } from "typeorm";
-import { Address } from "../../database/entities/Address";
-import { Client } from "../../database/entities/Client";
-import { AddressRepository } from "../../database/repositories/AddressRepository";
+import { Address } from "../../core/database/entities/Address";
+import { Client } from "../../core/database/entities/Client";
+import { AddressRepository } from "../../core/database/repositories/AddressRepository";
 
 export class AddressController {
     private readonly connection: Connection;
@@ -17,13 +17,15 @@ export class AddressController {
         try {
             //uid, street, "number", "client_uid"
             let newAddress = this.repository.create({
-                uid, street, number
+                uid,
+                street,
+                number,
             });
 
             let newUser = getConnection().manager.create(Client, {
                 uid: "3333",
                 age: 20,
-                name: "teste post address"
+                name: "teste post address",
             });
 
             // await getConnection().manager.save(newUser);
@@ -34,31 +36,31 @@ export class AddressController {
             newAddress.save();
 
             new AddressRepository().save(newAddress);
-    
+
             return {
-                ok: true
-            }
+                ok: true,
+            };
         } catch (error) {
             return {
                 ok: false,
-                error
-            }
+                error,
+            };
         }
     }
 
     async list() {
         let result2 = await this.repository.find({
-            relations: ['client']
+            relations: ["client"],
         });
 
         let resultClient = await getConnection().manager.find(Client, {
-            relations: ['address']
-        })
+            relations: ["address"],
+        });
 
         return {
             ok: true,
             data: result2,
-            client: resultClient
-        }
+            client: resultClient,
+        };
     }
 }

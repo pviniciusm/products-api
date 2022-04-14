@@ -1,5 +1,10 @@
-import { Connection, EntityNotFoundError, getConnection, Repository } from "typeorm";
-import { Category } from "../../database/entities/Category";
+import {
+    Connection,
+    EntityNotFoundError,
+    getConnection,
+    Repository,
+} from "typeorm";
+import { Category } from "../../core/database/entities/Category";
 
 export class CategoryController {
     private readonly connection: Connection;
@@ -20,18 +25,18 @@ export class CategoryController {
 
             let category = new Category(description, name, tag);
             console.log(category);
-            
+
             await this.repository.save(category);
             console.log(category);
-    
+
             return {
-                ok: true
-            }
+                ok: true,
+            };
         } catch (error) {
             return {
                 ok: false,
-                error
-            }
+                error,
+            };
         }
     }
 
@@ -46,19 +51,19 @@ export class CategoryController {
 
         return {
             ok: true,
-            data: result2
-        }
+            data: result2,
+        };
     }
 
     async update(uid: string, description: string) {
         try {
             let category = await this.repository.findOne(uid);
 
-            if(!category) {
+            if (!category) {
                 return {
                     ok: false,
-                    error: "category not found"
-                }
+                    error: "category not found",
+                };
             }
 
             category.descricao = description;
@@ -66,14 +71,13 @@ export class CategoryController {
             await this.repository.save(category);
 
             return {
-                ok: true
-            }
-
-        } catch(error) {
+                ok: true,
+            };
+        } catch (error) {
             return {
                 ok: false,
-                error
-            }
+                error,
+            };
         }
     }
 }
