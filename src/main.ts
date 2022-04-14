@@ -1,18 +1,15 @@
 import express from "express";
 
 import { initConnection } from "./core/database/connection";
+import { setSwagger } from "./core/docs";
 import { addressRoutes } from "./features/address/AddressRoutes";
 import { categoryRoutes } from "./features/categories/CategoryRoutes";
 import { productRoutes } from "./features/products/ProductRoutes";
 
-import swaggerUi from "swagger-ui-express";
-import swaggerSpec from "./core/docs/apiSpec";
-
 const app = express();
 app.use(express.json());
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+setSwagger(app);
 app.use("/category", categoryRoutes);
 app.use("/product", productRoutes);
 app.use("/address", addressRoutes);
