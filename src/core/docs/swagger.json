@@ -1,0 +1,13 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Products API",
+        "description": "This is the official documentation of Products API",
+        "version": "1.0.0",
+        "contact": {
+            "name": "Samuel Addams",
+            "email": "samuel@addams.com"
+        }
+    },
+    "paths": {}
+}

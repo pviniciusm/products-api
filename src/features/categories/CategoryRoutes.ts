@@ -7,11 +7,11 @@ categoryRoutes.get("/", async (req: Request, res: Response) => {
     try {
         const result = await new CategoryController().list();
 
-        return res.status(200).send(result); 
-    } catch(error) {
+        return res.status(200).send(result);
+    } catch (error) {
         return res.status(500).send({
             ok: false,
-            error
+            error,
         });
     }
 });
@@ -19,13 +19,17 @@ categoryRoutes.get("/", async (req: Request, res: Response) => {
 categoryRoutes.post("/", async (req: Request, res: Response) => {
     try {
         const { nome, descricao, tag } = req.body;
-        const result = await new CategoryController().create(nome, descricao, tag);
+        const result = await new CategoryController().create(
+            nome,
+            descricao,
+            tag
+        );
 
-        return res.status(200).send(result); 
-    } catch(error) {
+        return res.status(200).send(result);
+    } catch (error) {
         return res.status(500).send({
             ok: false,
-            error
+            error,
         });
     }
 });
@@ -37,11 +41,11 @@ categoryRoutes.put("/:id", async (req: Request, res: Response) => {
 
         const result = await new CategoryController().update(uid, description);
 
-        return res.status(200).send(result); 
-    } catch(error) {
+        return res.status(200).send(result);
+    } catch (error) {
         return res.status(500).send({
             ok: false,
-            error
+            error,
         });
     }
 });
@@ -52,7 +56,7 @@ categoryRoutes.put("/:id", async (req: Request, res: Response) => {
 
 //         const result = await new CategoryController().get(uid);
 
-//         return res.status(200).send(result); 
+//         return res.status(200).send(result);
 //     } catch(error) {
 //         return res.status(500).send({
 //             ok: false,
