@@ -28,6 +28,10 @@ export default {
                         type: "boolean",
                         summary: "Indica se o retorno foi ok",
                     },
+                    message: {
+                        type: "string",
+                        summary: "Return message",
+                    },
                 },
             },
         },
@@ -50,4 +54,14 @@ export default {
     paths: {
         ...categoryPaths,
     },
+    servers: [
+        {
+            url: "http://localhost:8081",
+            description: "Development server",
+        },
+        {
+            url: "http://localhost:8082",
+            description: "Testing server",
+        },
+    ],
 };

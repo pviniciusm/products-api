@@ -47,6 +47,7 @@ export default {
                 200: {
                     $ref: "#/components/responses/simple200",
                 },
+                404: {},
             },
         },
     },
