@@ -1,20 +1,57 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
+import { JwtPayload } from "jsonwebtoken";
+import { JwtService } from "../../core/services/auth/jwt.service";
 import { CategoryController } from "./CategoryController";
 
 const categoryRoutes = Router();
 
-categoryRoutes.get("/", async (req: Request, res: Response) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     try {
-        const result = await new CategoryController().list();
+        const authCookie = req.cookies?.authCookie;
 
-        return res.status(200).send(result);
+        if (!authCookie) {
+            throw new Error("Auth failed");
+        }
+
+        // Bearer <token>
+        const bearerParts = authCookie.split(" ");
+        const token = bearerParts[0];
+        console.log(token);
+
+        const payload = JwtService.verifyTokenJwt(token) as JwtPayload;
+        console.log(payload);
+
+        console.log(payload.username);
+        req.body.username = payload.username;
+        next();
     } catch (error) {
-        return res.status(500).send({
+        console.log(error);
+
+        res.status(401).send({
             ok: false,
-            error,
+            error: "invalid token",
         });
     }
-});
+};
+
+categoryRoutes.get(
+    "/",
+    [authMiddleware],
+    async (req: Request, res: Response) => {
+        try {
+            console.log(req.body.username);
+
+            const result = await new CategoryController().list();
+
+            return res.status(200).send(result);
+        } catch (error) {
+            return res.status(500).send({
+                ok: false,
+                error,
+            });
+        }
+    }
+);
 
 categoryRoutes.post("/", async (req: Request, res: Response) => {
     try {
