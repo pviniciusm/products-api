@@ -1,38 +1,39 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import { authMiddleware } from "../../core/middlewares/auth.middleware";
 import { JwtService } from "../../core/services/auth/jwt.service";
 import { CategoryController } from "./CategoryController";
 
 const categoryRoutes = Router();
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const authCookie = req.cookies?.authCookie;
+// const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         const authCookie = req.cookies?.authCookie;
 
-        if (!authCookie) {
-            throw new Error("Auth failed");
-        }
+//         if (!authCookie) {
+//             throw new Error("Auth failed");
+//         }
 
-        // Bearer <token>
-        const bearerParts = authCookie.split(" ");
-        const token = bearerParts[0];
-        console.log(token);
+//         // Bearer <token>
+//         const bearerParts = authCookie.split(" ");
+//         const token = bearerParts[0];
+//         console.log(token);
 
-        const payload = JwtService.verifyTokenJwt(token) as JwtPayload;
-        console.log(payload);
+//         const payload = JwtService.verifyTokenJwt(token) as JwtPayload;
+//         console.log(payload);
 
-        console.log(payload.username);
-        req.body.username = payload.username;
-        next();
-    } catch (error) {
-        console.log(error);
+//         console.log(payload.username);
+//         req.body.username = payload.username;
+//         next();
+//     } catch (error) {
+//         console.log(error);
 
-        res.status(401).send({
-            ok: false,
-            error: "invalid token",
-        });
-    }
-};
+//         res.status(401).send({
+//             ok: false,
+//             error: "invalid token",
+//         });
+//     }
+// };
 
 categoryRoutes.get(
     "/",

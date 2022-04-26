@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export class JwtService {
     private static secret: string = "abcteste";
 
-    static createToken(data: any) {
+    static createToken(data: any, expire?: number) {
         const header = JSON.stringify({
             alg: "HS256",
             typ: "JWT",
@@ -13,7 +13,9 @@ export class JwtService {
         const iat = Date.now();
         const today = new Date();
         const nbf = new Date(today).setHours(today.getHours() - 1);
-        const exp = new Date(today).setSeconds(today.getSeconds() + 5);
+        const exp = new Date(today).setSeconds(
+            today.getSeconds() + (expire ?? 10)
+        );
 
         const payload = JSON.stringify({
             ...data,
@@ -42,7 +44,9 @@ export class JwtService {
 
     // retorna o token criado
     static createTokenJwt(data: any) {
-        return jwt.sign(data, this.secret);
+        return jwt.sign(data, this.secret, {
+            notBefore: 3600,
+        });
     }
 
     // retorna payload se o token estiver válido

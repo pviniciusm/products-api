@@ -1,10 +1,16 @@
 export default {
     "/category": {
         summary: "Category GET and POST routes",
+
         get: {
             summary: "List categories",
             description: "List all saved categories",
             tags: ["Category"],
+            security: [
+                {
+                    headerAuth: [],
+                },
+            ],
             parameters: [
                 {
                     name: "filter",
@@ -22,6 +28,22 @@ export default {
                             example: {
                                 ok: true,
                                 data: [{ id: 10, name: "category 1" }],
+                            },
+                        },
+                    },
+                    headers: {
+                        Authorization: {
+                            description: "JWT Bearer token",
+                            schema: {
+                                type: "string",
+                                example: "Bearer <jwt_token>",
+                            },
+                        },
+                        "Set-Cookie": {
+                            description: "JWT Bearer token on cookies",
+                            schema: {
+                                type: "string",
+                                example: "auth-api=Bearer <jwt_token>",
                             },
                         },
                     },
@@ -56,6 +78,7 @@ export default {
         put: {
             summary: "Update category",
             description: "Update category data",
+            tags: ["Category"],
             parameters: [
                 {
                     name: "Id",

@@ -17,6 +17,10 @@ export default {
             name: "Category",
             description: "Category routes",
         },
+        {
+            name: "Auth",
+            description: "Authentication routes",
+        },
     ],
     components: {
         schemas: {
@@ -48,6 +52,18 @@ export default {
                         },
                     },
                 },
+            },
+        },
+        securitySchemes: {
+            headerAuth: {
+                type: "http",
+                scheme: "bearer",
+                bearerFormat: "JWT",
+            },
+            cookiesAuth: {
+                type: "apiKey",
+                name: "auth-api",
+                in: "cookie",
             },
         },
     },
